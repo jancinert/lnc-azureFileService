@@ -1,5 +1,26 @@
 # lnc-azureFileService
-File Service for Microsoft Azure SDK for PHP
+File Service for Microsoft Azure SDK for PHP  
+```
+```
+
+##Install via Composer
+
+1. Create a file named **composer.json** in the root of your project and add the following code to it:
+
+```
+{
+  "require": {
+    "lnc/azure-file-service": "^0"
+  },
+  "repositories":      [
+    {
+      "type": "pear",
+      "url":  "http://pear.php.net"
+    }
+  ],
+  "minimum-stability": "dev"
+}
+```
 
 ```
 <?php
