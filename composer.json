@@ -1,0 +1,17 @@
+{
+  "name":     "lnc/azureFileService",
+  "authors":  [
+    {
+      "name":  "Jan Cinert",
+      "email": "jan.cinert@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "WindowsFileService\\": "src/"
+    }
+  },
+  "require":  {
+    "microsoft/windowsazure": "*"
+  }
+}
