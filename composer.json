@@ -1,17 +1,18 @@
 {
-  "name":     "lnc/azure-file-service",
-  "authors":  [
+  "name":        "lnc/azure-file-service",
+  "description": "File Service for Microsoft Azure SDK for PHP",
+  "authors":     [
     {
       "name":  "Jan Cinert",
       "email": "jan.cinert@gmail.com"
     }
   ],
-  "autoload": {
+  "autoload":    {
     "psr-4": {
       "WindowsFileService\\": "src/"
     }
   },
-  "require":  {
+  "require":     {
     "microsoft/windowsazure": "*"
   }
 }
