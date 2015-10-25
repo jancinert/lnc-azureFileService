@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "19718b500d37a8d590df09693a710647",
-    "content-hash": "4f45e9c358a99bd9668f80b202bb9d63",
+    "hash": "f89669339818e7acc7b26584aa03358d",
+    "content-hash": "da8f4fab65921913a307c717bb4acbb0",
     "packages": [
         {
             "name": "microsoft/windowsazure",
@@ -328,7 +328,7 @@
     ],
     "packages-dev": [],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,

@@ -1,18 +1,25 @@
 {
-  "name":        "lnc/azure-file-service",
-  "description": "File Service for Microsoft Azure SDK for PHP",
-  "authors":     [
+  "name":              "lnc/azure-file-service",
+  "description":       "File Service for Microsoft Azure SDK for PHP",
+  "authors":           [
     {
       "name":  "Jan Cinert",
       "email": "jan.cinert@gmail.com"
     }
   ],
-  "autoload":    {
-    "psr-4": {
+  "autoload":          {
+    "psr-0": {
       "WindowsFileService\\": "src/"
     }
   },
-  "require":     {
+  "require":           {
     "microsoft/windowsazure": "*"
-  }
+  },
+  "repositories":      [
+    {
+      "type": "pear",
+      "url":  "http://pear.php.net"
+    }
+  ],
+  "minimum-stability": "dev"
 }
