@@ -3,6 +3,7 @@ File Service for Microsoft Azure SDK for PHP
 ```
 ```
 
+# Getting Started
 ##Install via Composer
 
 1. Create a file named **composer.json** in the root of your project and add the following code to it:
@@ -21,6 +22,10 @@ File Service for Microsoft Azure SDK for PHP
   "minimum-stability": "dev"
 }
 ```
+
+# Usage
+
+## Getting Started
 
 ```
 <?php
