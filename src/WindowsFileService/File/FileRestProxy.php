@@ -50,39 +50,6 @@
     class FileRestProxy extends ServiceRestProxy implements IFile {
 
         /**
-         * @var int Defaults to 32MB
-         */
-        private $_SingleFileUploadThresholdInBytes = 33554432;
-
-        /**
-         * Get the value for SingleFileUploadThresholdInBytes
-         *
-         * @return int
-         */
-        public function getSingleFileUploadThresholdInBytes() {
-            return $this->_SingleFileUploadThresholdInBytes;
-        }
-
-        /**
-         * Set the value for SingleFileUploadThresholdInBytes, Max 64MB
-         *
-         * @param int $val The max size to send as a single file block
-         *
-         * @return none
-         */
-        public function setSingleFileUploadThresholdInBytes( $val ) {
-            if( $val > 67108864 ) {
-                // What should the proper action here be?
-                $val = 67108864;
-            }
-            elseif( $val < 1 ) {
-                // another spot that could use looking at
-                $val = 33554432;
-            }
-            $this->_SingleFileUploadThresholdInBytes = $val;
-        }
-
-        /**
          * Creates URI path for file.
          *
          * @param string $share         The share name.
@@ -684,31 +651,44 @@
             );
 
             $response = null;
-            $bodySize = 0;
 
             if( is_null( $options ) ) {
                 $options = new CreateFileOptions();
             }
 
-            if( is_resource( $content ) ) {
-                $cStat = fstat( $content );
-                // if the resource is a remote file, $cStat will be false
-                if( $cStat ) {
-                    $bodySize = $cStat['size'];
+            // This is for large or failsafe upload
+            $end = 0;
+            // if threshold is lower than 4mb, honor threshold, else use 4mb
+            $blockSize = 4194304;
+            while( !$end ) {
+                if( is_resource( $content ) ) {
+                    $body = fread(
+                            $content,
+                            $blockSize
+                    );
+                    if( feof( $content ) ) {
+                        $end = 1;
+                    }
                 }
-            }
-            else {
-                $bodySize = strlen( $content );
-            }
-
-            // if we have a size we can try to one shot this, else failsafe on block upload
-            if( $bodySize && $bodySize <= $this->_SingleFileUploadThresholdInBytes ) {
-
-                // If read file failed for any reason it will throw an exception.
-                $body = is_resource( $content )
-                        ? stream_get_contents( $content )
-                        : $content;
-
+                else {
+                    if( strlen( $content ) <= $blockSize ) {
+                        $body = $content;
+                        $end  = 1;
+                    }
+                    else {
+                        $body    = substr(
+                                $content,
+                                0,
+                                $blockSize
+                        );
+                        $content = substr_replace(
+                                $content,
+                                '',
+                                0,
+                                $blockSize
+                        );
+                    }
+                }
                 $range    = new FileRange( 0, strlen( $body ) - 1 );
                 $response = $this->createFileRange(
                                  $share,
@@ -719,53 +699,7 @@
                                  $options
                 );
             }
-            else {
-                // This is for large or failsafe upload
-                $end = 0;
-                // if threshold is lower than 4mb, honor threshold, else use 4mb
-                $blockSize = ( $this->_SingleFileUploadThresholdInBytes < 4194304 )
-                        ? $this->_SingleFileUploadThresholdInBytes
-                        : 4194304;
-                while( !$end ) {
-                    if( is_resource( $content ) ) {
-                        $body = fread(
-                                $content,
-                                $blockSize
-                        );
-                        if( feof( $content ) ) {
-                            $end = 1;
-                        }
-                    }
-                    else {
-                        if( strlen( $content ) <= $blockSize ) {
-                            $body = $content;
-                            $end  = 1;
-                        }
-                        else {
-                            $body    = substr(
-                                    $content,
-                                    0,
-                                    $blockSize
-                            );
-                            $content = substr_replace(
-                                    $content,
-                                    '',
-                                    0,
-                                    $blockSize
-                            );
-                        }
-                    }
-                    $range    = new FileRange( 0, strlen( $body ) - 1 );
-                    $response = $this->createFileRange(
-                                     $share,
-                                     $directoryPath,
-                                     $file,
-                                     $range,
-                                     $body,
-                                     $options
-                    );
-                }
-            }
+        
             return $response;
         }
 
