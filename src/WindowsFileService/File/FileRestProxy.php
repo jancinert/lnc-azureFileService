@@ -657,7 +657,8 @@
             }
 
             // This is for large or failsafe upload
-            $end = 0;
+            $end    = 0;
+            $offset = 0;
             // if threshold is lower than 4mb, honor threshold, else use 4mb
             $blockSize = 4194304;
             while( !$end ) {
@@ -689,7 +690,8 @@
                         );
                     }
                 }
-                $range    = new FileRange( 0, strlen( $body ) - 1 );
+                $range = new FileRange( $offset, $offset + strlen( $body ) - 1 );
+                $offset += $range->getLength();
                 $response = $this->createFileRange(
                                  $share,
                                  $directoryPath,
@@ -699,7 +701,7 @@
                                  $options
                 );
             }
-        
+
             return $response;
         }
 
