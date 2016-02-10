@@ -30,6 +30,7 @@ File Service for Microsoft Azure SDK for PHP
 <?php
     require_once __DIR__ . '/vendor/autoload.php';
     use WindowsFileService\Common\ServicesBuilder;
+    use WindowsFileService\Facade;
 
     $accountName = '';
     $accountKey  = '';
@@ -43,6 +44,18 @@ File Service for Microsoft Azure SDK for PHP
             $accountName,
             $accountKey
     );
+    
+### USING FACADE    
+    
+    $result = new Facade( $connectionString );
+    $result->uploadFile(
+           'test',
+           'test',
+           'test.dat',
+           '/home/test.dat'
+    );
+    
+### DIRECTLY            
 
     $fileRestProxy = ServicesBuilder::getInstance()
                                     ->createFileService( $connectionString );
