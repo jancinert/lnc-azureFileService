@@ -13,7 +13,7 @@
     }
   },
   "require":           {
-    "microsoft/windowsazure": "*"
+    "microsoft/windowsazure": "v0.4.5"
   },
   "repositories":      [
     {
